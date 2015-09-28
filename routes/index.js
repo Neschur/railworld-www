@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var Page = require('../models/page');
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
   Page.findOne({name: 'home'}, function (err, doc) {
     var body;
@@ -12,7 +11,9 @@ router.get('/', function(req, res, next) {
     else
       body = '';
 
-    res.render('index', { title: 'Home', content: body });
+    edit = req.user && req.user['admin'];
+
+    res.render('index', { title: 'Home', content: body, edit: edit });
   });
 });
 
@@ -26,6 +27,10 @@ router.get('/home/edit', function(req, res, next) {
 });
 
 router.post('/home/edit', function(req, res, next) {
+  if (!(req.user && req.user['admin'])) {
+    res.render("404");
+    return;
+  }
   Page.findOne({name: 'home'}, function (err, doc) {
     if(!doc) {
       Page.create({

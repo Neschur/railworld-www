@@ -3,8 +3,9 @@ extends layout
 block content
   .page-head
     h1= title
-    | (
-    a(href='/home/edit')
-      | edit
-    | )
+    if edit
+      | (
+      a(href='/home/edit')
+        | edit
+      | )
   != content
