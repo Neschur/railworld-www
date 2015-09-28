@@ -2,3 +2,13 @@ extends layout
 
 block content
   h1= title
+
+  ul
+  each val in maps
+    li
+      a(href="/maps/" + val['fileName'])
+        = val['fileName']
+
+  form#uploadForm(enctype='multipart/form-data', action='/maps', method='post')
+    input(type='file', name='map')
+    input(type='submit', value='Upload', name='submit')
