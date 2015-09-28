@@ -45,7 +45,7 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 // mongoose
-mongoose.connect('mongodb://localhost/railworld-web');
+mongoose.connect('mongodb://localhost/railworld-www');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

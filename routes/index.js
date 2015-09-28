@@ -18,8 +18,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/home/edit', function(req, res, next) {
-  Page.find({name: 'home'}, function (err, docs) {
-    body = docs[0]['body'];
+  Page.findOne({name: 'home'}, function (err, doc) {
+    body = doc && doc['body'];
 
     res.render('edit-page', { page: 'home', pageContent: body});
   });
