@@ -3,11 +3,40 @@ extends layout
 block content
   h1= title
 
-  ul
-  each val in maps
-    li
-      a(href="/maps/" + val['fileName'])
-        = val['fileName']
+
+  table
+    tr
+      th
+        | Name
+      th
+        | Color?
+      th
+        | Scale(ft/px)
+      th
+        | Loads
+      th
+        | Unloads
+      th
+        | Track Mileage
+      th
+        | Download
+    each map in maps
+      tr
+        td
+          = map['name']
+        td
+          = map['color']
+        td
+          = map['scale']
+        td
+          = map['loads']
+        td
+          = map['unloads']
+        td
+          = map['mileage']
+        td
+          a(href="/maps/" + map['fileName'])
+            = map['fileName']
 
   form#uploadForm(enctype='multipart/form-data', action='/maps', method='post')
     input(type='file', name='map')
