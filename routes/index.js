@@ -3,47 +3,57 @@ var router = express.Router();
 var Page = require('../models/page');
 
 router.get('/', function(req, res, next) {
-  Page.findOne({name: 'home'}, function (err, doc) {
-    var body;
+  res.redirect('/home');
+});
+
+router.get('/:type(home|downloads)', function(req, res, next) {
+  type = req.params.type;
+  Page.findOne({name: type}, function (err, doc) {
+    var body = '';
+    var title = '';
 
     if(doc)
       body = doc['body'];
-    else
-      body = '';
+      title = doc['title'];
 
     edit = req.user && req.user['admin'];
 
-    res.render('index', { title: 'Home', content: body, edit: edit });
+    res.render('page', {url: type, title: title, content: body, edit: edit });
   });
 });
 
-router.get('/home/edit', function(req, res, next) {
-  Page.findOne({name: 'home'}, function (err, doc) {
+router.get('/:type(home|downloads)/edit', function(req, res, next) {
+  Page.findOne({name: type}, function (err, doc) {
     body = doc && doc['body'];
 
-    res.render('edit-page', { page: 'home', pageContent: body});
+    res.render('edit-page', { page: type, pageContent: body});
   });
 
 });
 
-router.post('/home/edit', function(req, res, next) {
+router.post('/:type(home|downloads)/edit', function(req, res, next) {
+  type = req.params.type;
+
   if (!(req.user && req.user['admin'])) {
     res.render("404");
     return;
   }
-  Page.findOne({name: 'home'}, function (err, doc) {
+
+  Page.findOne({name: type}, function (err, doc) {
     if(!doc) {
       Page.create({
-        name: 'home',
-        body: req.body.data
+        name: type,
+        body: req.body.data,
+        title: req.body.title,
       });
     } else {
       doc.body = req.body.data;
+      doc.title = req.body.title,
       doc.save();
     }
 
   });
-  res.redirect('/');
+  res.redirect('/' + type);
 });
 
 module.exports = router;

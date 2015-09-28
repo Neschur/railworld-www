@@ -3,6 +3,8 @@ extends layout
 block content
   h1= page
   form(role='form', action="/" + page + "/edit" method="post")
+    input(type="text" name="title")
+    br
     textarea(rows="30" cols="90" name="data")
       = pageContent
     br
