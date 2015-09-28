@@ -4,7 +4,11 @@ var Page = require('../models/page');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Home' });
+  Page.find({name: 'home'}, function (err, docs) {
+    body = docs[0]['body'];
+
+    res.render('index', { title: 'Home', content: body });
+  });
 });
 
 router.get('/home/edit', function(req, res, next) {
@@ -13,7 +17,7 @@ router.get('/home/edit', function(req, res, next) {
 
 router.post('/home/edit', function(req, res, next) {
   Page.create({
-    url: 'home',
+    name: 'home',
     body: req.body.data
   });
   res.redirect('/home/edit');
