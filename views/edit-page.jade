@@ -4,5 +4,6 @@ block content
   h1= page
   form(role='form', action="/" + page + "/edit" method="post")
     textarea(rows="30" cols="90" name="data")
+      = pageContent
     br
     button(type='submit') Submit
