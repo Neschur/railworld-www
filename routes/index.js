@@ -12,9 +12,10 @@ router.get('/:type(home|downloads)', function(req, res, next) {
     var body = '';
     var title = '';
 
-    if(doc)
+    if(doc) {
       body = doc['body'];
       title = doc['title'];
+    }
 
     edit = req.user && req.user['admin'];
 
