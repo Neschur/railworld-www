@@ -1,5 +1,5 @@
 var express = require('express');
-var multer  = require('multer')
+var multer  = require('multer');
 var upload = multer({ dest: 'tmp/uploads/' });
 var Map = require('../models/map');
 var fs = require('fs');

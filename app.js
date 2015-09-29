@@ -9,7 +9,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var routes = require('./routes/index');
-var maps = require('./routes/maps');
+var mapsRoute = require('./routes/maps');
+var apiRoute = require('./routes/api');
 var passportRoute = require('./routes/passport');
 
 var app = express();
@@ -35,7 +36,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/', passportRoute);
-app.use('/maps', maps);
+app.use('/maps', mapsRoute);
+app.use('/', apiRoute);
 
 
 // passport config
