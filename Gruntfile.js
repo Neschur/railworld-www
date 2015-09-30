@@ -5,7 +5,7 @@ module.exports = function (grunt) {
         workspace: '/tmp/railworld-www',
         deployTo: '~/apps/railworld-www',
         repositoryUrl: 'https://github.com/Neschur/railworld-www.git',
-        ignores: ['.git', 'node_modules'],
+        ignores: ['.git', 'node_modules', 'public/maps'],
         keepReleases: 2,
         shallowClone: true
       },

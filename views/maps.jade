@@ -38,5 +38,5 @@ block content
             = map['fileName']
 
   form#uploadForm(enctype='multipart/form-data', action='/maps', method='post')
-    input(type='file', name='map')
+    input(type='file', name='maps[]' multiple)
     input(type='submit', value='Upload', name='submit')

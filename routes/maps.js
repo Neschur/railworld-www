@@ -13,12 +13,11 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.post('/', upload.single('map'), function(req, res){
-  uploadedName = 'tmp/uploads/' + req.file['filename'];
-  newName = 'public/maps/' + req.file['originalname'];
-  fs.exists(newName, function(exists) {
-    if (exists) { // TODO
-      res.render('500');
+router.post('/', upload.array('maps[]', 12), function(req, res){
+  req.files.forEach(function(map) {
+    uploadedName = 'tmp/uploads/' + map['filename'];
+    newName = 'public/maps/' + map['originalname'];
+    if(fs.existsSync(newName)) {
       return;
     }
 
@@ -27,17 +26,12 @@ router.post('/', upload.single('map'), function(req, res){
     var info = JSON.parse(data);
 
     fs.rename(uploadedName, newName);
-    Map.create({
-      fileName: req.file['originalname'],
-      name: info['name'],
-      color: info['color'],
-      scale: info['scale'],
-      loads: info['loads'],
-      unloads: info['unloads'],
-      mileage: info['mileage'],
-    });
-    res.redirect('/maps/');
+
+    info['fileName'] = map['originalname'];
+    Map.create(info);
+
   });
+  res.redirect('/maps/');
 
 });
 
