@@ -34,8 +34,8 @@ block content
         td
           = map['mileage']
         td
-          a(href="/maps/" + map['fileName'])
-            = map['fileName']
+          a(href="/maps/" + map['mapFileName'])
+            = map['mapFileName']
 
   form#uploadForm(enctype='multipart/form-data', action='/maps', method='post')
     input(type='file', name='maps[]' multiple)
