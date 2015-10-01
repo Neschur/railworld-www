@@ -3,7 +3,6 @@ var multer  = require('multer');
 var upload = multer({ dest: 'tmp/uploads/' });
 var Map = require('../models/map');
 var fs = require('fs');
-var AdmZip = require('adm-zip');
 
 var router = express.Router();
 
@@ -15,15 +14,13 @@ router.get('/', function(req, res, next) {
 
 router.post('/', upload.array('maps[]', 12), function(req, res){
   req.files.forEach(function(map) {
-    uploadedName = 'tmp/uploads/' + map['filename'];
-    newName = 'public/maps/' + map['originalname'];
+    var uploadedName = 'tmp/uploads/' + map['filename'];
+    var newName = 'public/maps/' + map['originalname'];
     if(fs.existsSync(newName)) {
       return;
     }
 
-    var zip = new AdmZip(uploadedName);
-    var data = zip.readAsText(zip.getEntry('info.json'));
-    var info = JSON.parse(data);
+    var info = Map.parseZippedXml(uploadedName);
 
     fs.rename(uploadedName, newName);
 
