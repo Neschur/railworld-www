@@ -5,7 +5,8 @@ var xmldoc = require('xmldoc');
 var Schema = mongoose.Schema;
 
 var Map = new Schema({
-  fileName: String,
+  zipFileName: String,
+  mapFileName: String,
   name: String,
   scale: Number,
   loads: String,
@@ -19,6 +20,7 @@ Map.statics.parseZippedXml = function parseZippedXml (uploadedName, cb) {
   console.log(uploadedName);
   zip.getEntries().forEach(function(zipEntry) {
     if(zipEntry.entryName.endsWith('.rwm')) {
+      info['mapFileName'] = zipEntry.entryName;
       data = zip.readAsText(zipEntry);
       var doc = new xmldoc.XmlDocument(data);
       info['scale'] = doc.descendantWithPath('Meta.Distance').attr.FeetPerPixel;

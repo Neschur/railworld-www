@@ -24,7 +24,7 @@ router.post('/', upload.array('maps[]', 12), function(req, res){
 
     fs.rename(uploadedName, newName);
 
-    info['fileName'] = map['originalname'];
+    info['zipFileName'] = map['originalname'];
     Map.create(info);
 
   });
