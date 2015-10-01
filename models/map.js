@@ -21,19 +21,22 @@ Map.statics.parseZippedXml = function parseZippedXml (uploadedName, cb) {
     if(zipEntry.entryName.endsWith('.rwm')) {
       data = zip.readAsText(zipEntry);
       var doc = new xmldoc.XmlDocument(data);
-      info['scale'] = doc.descendantWithPath('Meta.Distance').attr.Zoom;
+      info['scale'] = doc.descendantWithPath('Meta.Distance').attr.FeetPerPixel;
       info['name'] = doc.descendantWithPath('Meta.Map').attr.Title;
+      info['color'] = doc.descendantWithPath('Meta.Image').attr.Color;
 
       loads = [];
       unloads = [];
 
       var segments = doc.childNamed("Segments");
       segments.eachChild(function (segment) {
-        if(segment.name == 'LUSegment') {;
-
+        if(segment.descendantWithPath('Load')) {
           loads.push(segment.descendantWithPath('Load').attr.Type)
+        }
+        if(segment.descendantWithPath('Unload')) {
           unloads.push(segment.descendantWithPath('Unload').attr.Type)
         }
+
       });
 
       var arrayUnique = function(a) {
@@ -45,11 +48,20 @@ Map.statics.parseZippedXml = function parseZippedXml (uploadedName, cb) {
 
       info['loads'] = arrayUnique(loads).join(', ');
       info['unloads'] = arrayUnique(unloads).join(', ');
+
+      var distance = 0;
+      segments.eachChild(function (segment) {
+        if(['TrackSegment', 'EESegment', 'LUSegment', 'HiddenLUSegment', 'HiddenSegment'].indexOf(segment.name) > -1){
+          dist = Math.sqrt(Math.pow(segment.attr.X1 - segment.attr.X2, 2)
+           + Math.pow(segment.attr.Y1 - segment.attr.Y2, 2));
+          distance += dist;
+          console.log();
+        }
+      });
+
+      info['mileage'] = (distance / 5280.0 * info['scale']).toFixed(2);
     }
   });
-
-  // info['color'] =
-  // info['mileage'] =
 
   return info;
 }
