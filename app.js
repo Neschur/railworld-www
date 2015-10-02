@@ -12,6 +12,7 @@ var routes = require('./routes/index');
 var mapsRoute = require('./routes/maps');
 var apiRoute = require('./routes/api');
 var passportRoute = require('./routes/passport');
+var uploadsRoute = require('./routes/uploads');
 
 var app = express();
 
@@ -38,6 +39,7 @@ app.use('/', routes);
 app.use('/', passportRoute);
 app.use('/maps', mapsRoute);
 app.use('/', apiRoute);
+app.use('/uploads', uploadsRoute);
 
 
 // passport config

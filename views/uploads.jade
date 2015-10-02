@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1
+    | Title
+  each file in uploads
+    = 'public/uploads/' + file
+    br
+
+  if edit
+    form#uploadForm(enctype='multipart/form-data', action='/Uploads', method='post')
+      input(type='file', name='files[]' multiple)
+      input(type='submit', value='Upload', name='submit')
