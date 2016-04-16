@@ -1,0 +1,20 @@
+db:
+  image: mongo:3.2
+  volumes:
+    - ./db/data:/data/db
+    - ./db/config/:/data/configdb
+  ports:
+    - "27018:27017"
+www:
+  build: .
+  command: npm start
+  ports:
+    - "3000:3000"
+  volumes:
+    - ./bin:/app/bin
+    - ./models:/app/models
+    - ./public:/app/public
+    - ./routes:/app/routes
+    - ./views:/app/views
+  links:
+    - db

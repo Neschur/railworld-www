@@ -3,3 +3,4 @@ npm-debug.log
 public/maps/
 public/uploads/
 tmp/
+db/
